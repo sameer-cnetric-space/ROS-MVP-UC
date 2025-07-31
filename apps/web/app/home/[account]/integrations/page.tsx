@@ -10,6 +10,7 @@ import { createI18nServerInstance } from '~/lib/i18n/i18n.server';
 // local imports
 import { TeamAccountLayoutPageHeader } from '../_components/team-account-layout-page-header';
 import { loadTeamWorkspace } from '../_lib/server/team-account-workspace.loader';
+import { IntegrationsErrorToast } from './_components/integrations-error-toast';
 import { IntegrationsGrid } from './_components/integrations-grid';
 import { getIntegrationStatus } from './_lib/server/integrations.service';
 
@@ -18,6 +19,7 @@ interface TeamAccountIntegrationsPageProps {
   searchParams?: Promise<{
     platform?: string;
     status?: string;
+    error?: string;
   }>;
 }
 
@@ -35,7 +37,8 @@ async function TeamAccountIntegrationsPage({
   searchParams,
 }: TeamAccountIntegrationsPageProps) {
   const account = (await params).account;
-
+  const search = await searchParams;
+  const error = search?.error;
   // Get the current team workspace to access the account ID
   const workspace = await loadTeamWorkspace(account);
   const accountId = workspace.account.id;
@@ -77,6 +80,7 @@ async function TeamAccountIntegrationsPage({
             accountName={account}
             integrationStatus={integrationStatus}
           />
+          <IntegrationsErrorToast error={error} />
         </div>
       </PageBody>
     </>
