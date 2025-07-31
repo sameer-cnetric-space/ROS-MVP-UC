@@ -57,6 +57,8 @@ CREATE UNIQUE INDEX slack_tokens_account_id_key ON public.slack_tokens USING btr
 
 CREATE UNIQUE INDEX slack_tokens_pkey ON public.slack_tokens USING btree (id);
 
+CREATE UNIQUE INDEX slack_tokens_team_id_unique ON public.slack_tokens USING btree (team_id);
+
 alter table "public"."folk_tokens" add constraint "folk_tokens_pkey" PRIMARY KEY using index "folk_tokens_pkey";
 
 alter table "public"."slack_tokens" add constraint "slack_tokens_pkey" PRIMARY KEY using index "slack_tokens_pkey";
@@ -76,6 +78,8 @@ alter table "public"."slack_tokens" add constraint "slack_tokens_account_id_fkey
 alter table "public"."slack_tokens" validate constraint "slack_tokens_account_id_fkey";
 
 alter table "public"."slack_tokens" add constraint "slack_tokens_account_id_key" UNIQUE using index "slack_tokens_account_id_key";
+
+alter table "public"."slack_tokens" add constraint "slack_tokens_team_id_unique" UNIQUE using index "slack_tokens_team_id_unique";
 
 alter table "public"."slack_tokens" add constraint "slack_tokens_user_id_fkey" FOREIGN KEY (user_id) REFERENCES auth.users(id) ON DELETE CASCADE not valid;
 
